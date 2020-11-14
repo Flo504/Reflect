@@ -2,10 +2,7 @@ package fr.flo504.reflect;
 
 import org.bukkit.Bukkit;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -114,6 +111,38 @@ public class Reflect {
         } catch (ClassNotFoundException ignored) {}
 
         return Optional.ofNullable(clazz);
+    }
+
+    public static <T extends Enum<T>> T getEnumConstant(Class<T> enumClass, String value){
+        if(enumClass == null || value == null)
+            return null;
+
+        value = value.replace(" ", "").toUpperCase();
+
+        for(final T constant : enumClass.getEnumConstants()){
+            if(constant.name().equalsIgnoreCase(value))
+                return constant;
+        }
+
+        return null;
+    }
+
+    public static Object getStaticConstant(Class<?> clazz, String value){
+        if(clazz == null || value == null)
+            return null;
+
+        value = value.replace(" ", "");
+
+        for(Field field : clazz.getDeclaredFields()){
+            if(field.getType() != clazz)
+                continue;
+            if(!Modifier.isStatic(field.getModifiers()))
+                continue;
+            if(field.getName().equalsIgnoreCase(value))
+                return getStatic(field);
+        }
+
+        return null;
     }
 
     public final static class Commons {
