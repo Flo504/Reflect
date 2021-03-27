@@ -2,4 +2,4 @@ name: Reflect
 author: Flo504
 version: 1.0.0
 main: fr.flo504.reflect.ReflectPlugin
-api-version: "1.16"
+api-version: "1.13"
